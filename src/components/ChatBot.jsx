@@ -41,7 +41,7 @@ export default function ChatBot({ onClose }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer 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`,
+'Authorization': `Bearer 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`,
           'HTTP-Referer': 'http://localhost:5173',
           'X-Title': 'CineVault',
         },
