@@ -268,8 +268,9 @@ const MOVIES_PER_PAGE = 50
     }
   }, [user, selected])
 
-  const allFiltered = movies
+ const allFiltered = movies
     .filter(m => {
+      if (!m.Poster || m.Poster === 'N/A') return false
       if (filter === 'toprated') return parseFloat(m.imdbRating) >= 8.0
       if (filter === 'new') return parseInt(m.Year) >= 2022
       const matchGenre = filter === 'All' || m.Genre?.includes(filter)
