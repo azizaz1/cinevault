@@ -200,6 +200,8 @@ export default function App() {
 const [showDuel, setShowDuel] = useState(false)
 const [showChat, setShowChat] = useState(false)
 const [selectedActor, setSelectedActor] = useState(null)
+const [currentPage, setCurrentPage] = useState(1)
+const MOVIES_PER_PAGE = 50
   useEffect(() => {
     setTimeout(() => setMounted(true), 100)
     const loadMovies = async () => {
@@ -266,7 +268,7 @@ const [selectedActor, setSelectedActor] = useState(null)
     }
   }, [user, selected])
 
-  const filtered = movies
+  const allFiltered = movies
     .filter(m => {
       if (filter === 'toprated') return parseFloat(m.imdbRating) >= 8.0
       if (filter === 'new') return parseInt(m.Year) >= 2022
@@ -281,8 +283,11 @@ const [selectedActor, setSelectedActor] = useState(null)
       return 0
     })
 
-  const hero = movies[heroIdx] || null
+const totalPages = Math.ceil(allFiltered.length / MOVIES_PER_PAGE)
+const filtered = allFiltered.slice((currentPage - 1) * MOVIES_PER_PAGE, currentPage * MOVIES_PER_PAGE)
 
+const heroMovies = movies.filter(m => m.Poster && m.Poster !== 'N/A')
+const hero = heroMovies[heroIdx % heroMovies.length] || null
   return (
     <div style={{ minHeight: '100vh', background: '#080608', color: '#f0ebe3', fontFamily: 'Georgia, serif', overflowX: 'hidden' }}>
       <style>{`
@@ -660,7 +665,59 @@ const [selectedActor, setSelectedActor] = useState(null)
           </div>
         )}
       </div>
+{/* PAGINATION */}
+{!loading && totalPages > 1 && (
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '0 48px 60px', flexWrap: 'wrap' }}>
+    <button
+      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+      disabled={currentPage === 1}
+      style={{
+        background: 'transparent',
+        border: '1px solid rgba(255,255,255,0.1)',
+        color: currentPage === 1 ? '#3a3535' : 'var(--muted)',
+        padding: '8px 16px', borderRadius: '3px',
+        fontFamily: "'Outfit', sans-serif", fontSize: '12px',
+        cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+        transition: 'all 0.2s',
+      }}
+    >← Prev</button>
 
+    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+      <button
+        key={page}
+        onClick={() => setCurrentPage(page)}
+        style={{
+          background: currentPage === page ? 'var(--gold)' : 'transparent',
+          border: currentPage === page ? 'none' : '1px solid rgba(255,255,255,0.1)',
+          color: currentPage === page ? '#080608' : 'var(--muted)',
+          width: '36px', height: '36px',
+          borderRadius: '3px',
+          fontFamily: "'Outfit', sans-serif",
+          fontSize: '12px', fontWeight: currentPage === page ? 700 : 400,
+          cursor: 'pointer', transition: 'all 0.2s',
+        }}
+      >{page}</button>
+    ))}
+
+    <button
+      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+      disabled={currentPage === totalPages}
+      style={{
+        background: 'transparent',
+        border: '1px solid rgba(255,255,255,0.1)',
+        color: currentPage === totalPages ? '#3a3535' : 'var(--muted)',
+        padding: '8px 16px', borderRadius: '3px',
+        fontFamily: "'Outfit', sans-serif", fontSize: '12px',
+        cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+        transition: 'all 0.2s',
+      }}
+    >Next →</button>
+
+    <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '11px', color: '#3a3535', marginLeft: '8px' }}>
+      Page {currentPage} of {totalPages} — {allFiltered.length} films
+    </span>
+  </div>
+)}
       {/* MOVIE MODAL */}
       {selected && (
         <div className="modal-backdrop" onClick={() => { setSelected(null); setTrailer(null) }}>
