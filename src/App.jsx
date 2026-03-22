@@ -13,22 +13,22 @@ import ActorPage from './components/ActorPage'
 import ChatBot from './components/ChatBot'
 import { getCachedMovie, getAllCachedMovies } from './lib/movieCache'
 const POPULAR_MOVIES = [
-  // Lot 1 — Blockbusters récents
+  // Blockbusters récents
   'Oppenheimer', 'Dune Part Two', 'Poor Things', 'Barbie',
   'The Batman', 'Avatar The Way of Water', 'Killers of the Flower Moon',
   'Everything Everywhere All at Once', 'Top Gun Maverick', 'Elvis',
-  'The Whale', 'Tár', 'Babylon', 'Black Panther Wakanda Forever',
+  'The Whale', 'Tar', 'Babylon', 'Black Panther Wakanda Forever',
   'Doctor Strange Multiverse of Madness', 'Thor Love and Thunder',
   'Spider-Man No Way Home', 'The Menu', 'Glass Onion', 'Nope',
 
-  // Lot 2 — Classiques modernes
+  // Classiques modernes
   'Joker', 'Parasite', '1917', 'Ford v Ferrari',
-   'Knives Out', 'Marriage Story',
+  'Once Upon a Time in Hollywood', 'Knives Out', 'Marriage Story',
   'The Irishman', 'Jojo Rabbit', 'Little Women',
   'Midsommar', 'Hereditary', 'Get Out', 'Us', 'It Chapter Two',
   'Ad Astra', 'Uncut Gems', 'The Lighthouse', 'Booksmart', 'Rocketman',
 
-  // Lot 3 — Grands classiques
+  // Grands classiques
   'The Dark Knight', 'Inception', 'Interstellar', 'The Prestige',
   'Memento', 'Pulp Fiction', 'The Godfather', 'Goodfellas',
   'Fight Club', 'The Shawshank Redemption', 'Forrest Gump',
@@ -36,7 +36,7 @@ const POPULAR_MOVIES = [
   'The Matrix', 'Gladiator', 'Braveheart', 'Saving Private Ryan',
   'American Beauty', 'A Beautiful Mind',
 
-  // Lot 4 — Action & Aventure
+  // Action & Aventure
   'Mad Max Fury Road', 'John Wick', 'Mission Impossible Fallout',
   'Avengers Endgame', 'Avengers Infinity War', 'Black Panther',
   'Logan', 'Deadpool', 'Guardians of the Galaxy',
@@ -45,14 +45,138 @@ const POPULAR_MOVIES = [
   'No Country for Old Men', 'There Will Be Blood', 'Whiplash',
   'La La Land', 'Moonlight',
 
-  // Lot 5 — International & Récents
+  // International
   'Drive My Car', 'The Power of the Dog', 'Nomadland',
   'Sound of Metal', 'Promising Young Woman', 'Minari',
-  'Judas and the Black Messiah', 'Ma Raineys Black Bottom',
-  'The Father', 'Mank', 'Portrait of a Lady on Fire',
-  'Pain and Glory', 'An Easy Girl', 'Atlantics',
+  'Portrait of a Lady on Fire', 'Pain and Glory',
   'Shoplifters', 'Roma', 'Cold War', 'Capernaum',
-  'Never Look Away', 'Burning'
+  'Burning', 'The Father', 'Mank',
+
+  // Horreur & Thriller
+  'A Quiet Place', 'Bird Box', 'It', 'Doctor Sleep',
+  'Ready or Not', 'The Invisible Man', 'Promising Young Woman',
+  'Underwater', 'The Platform', 'His House',
+  'Saint Maud', 'Possessor', 'The Hunt', 'Vivarium',
+  'Color Out of Space', 'Antebellum', 'The Empty Man',
+  'Candyman', 'Last Night in Soho', 'Spencer',
+
+  // Comédie & Drame
+  'The Grand Budapest Hotel', 'Superbad', 'Game Night',
+  'Bridesmaids', 'The Big Sick', 'Blockers', 'Tag',
+  'Long Shot', 'Stuber', 'Good Boys',
+  'Booksmart', 'The Peanut Butter Falcon', 'Dolemite Is My Name',
+  'Jojo Rabbit', 'The Death of Stalin', 'Sorry to Bother You',
+  'Palm Springs', 'Bill and Ted Face the Music', 'Eurovision',
+
+  // Science Fiction
+  'Arrival', 'Ex Machina', 'The Martian', 'Gravity',
+  'Annihilation', 'Upgrade', 'Alita Battle Angel',
+  'Prospect', 'Vivarium', 'Archive',
+  'Synchronic', 'Outside the Wire', 'Finch',
+  'Oxygen', 'Settlers', 'The Midnight Sky',
+  'Chaos Walking', 'Stowaway', 'Voyagers',
+
+  // Animés
+  'Spider-Man Into the Spider-Verse', 'Soul', 'Onward',
+  'Wolfwalkers', 'The Mitchells vs the Machines',
+  'Luca', 'Encanto', 'Turning Red',
+  'The Bad Guys', 'Puss in Boots The Last Wish',
+  'Guillermo del Toros Pinocchio', 'Marcel the Shell',
+  'Flee', 'The House', 'Wendell and Wild',
+
+  // Biopic & Histoire
+  'Bohemian Rhapsody', 'Rocketman', 'Judy', 'Harriet',
+  'Selena Gomez My Mind and Me', 'The Eyes of Tammy Faye',
+  'Being the Ricardos', 'tick tick Boom',
+  'Respect', 'I Carry You With Me', 'Passing',
+  'The Dig', 'Rebecca', 'Ammonite',
+  'The Personal History of David Copperfield',
+
+  // Crime & Thriller
+  'Prisoners', 'Gone Girl', 'Zodiac', 'Mystic River',
+  'Nightcrawler', 'Sicario', 'Wind River', 'Three Billboards',
+  'Widows', 'Bad Times at the El Royale', 'Ozark',
+  'Knives Out', 'Parasite', 'The Gentlemen',
+  'Tenet', 'Boss Level', 'Reminiscence',
+
+  // Romance & Drame
+  'Call Me by Your Name', 'Moonlight', 'Carol',
+  'The Shape of Water', 'Phantom Thread', 'Darkest Hour',
+  'The Favourite', 'If Beale Street Could Talk',
+  'Marriage Story', 'The Two Popes', 'Waves',
+  'First Cow', 'Minari', 'Another Round',
+  'The Disciple', 'Quo Vadis Aida',
+
+  // Action récente
+  'The Gray Man', 'Extraction', 'Red Notice',
+  'Army of the Dead', 'Zack Snyders Justice League',
+  'The Suicide Squad', 'Black Widow', 'Shang-Chi',
+  'Eternals', 'No Time to Die', 'F9 The Fast Saga',
+  'Jungle Cruise', 'Free Guy', 'The Tomorrow War',
+  'Snake Eyes', 'Mortal Kombat', 'Monster Hunter',
+
+  // Films Netflix & Streaming
+  'Bird Box', 'Bright', 'Okja', 'Mudbound',
+  'Roma', 'The Two Popes', 'Marriage Story',
+  'Mank', 'Malcolm and Marie', 'The Dig',
+  'Army of Thieves', 'The Harder They Fall',
+  'tick tick Boom', 'The Power of the Dog',
+  'Don t Look Up', 'The Hand of God',
+
+  // Classiques années 90-2000
+  'The Sixth Sense', 'American History X', 'Requiem for a Dream',
+  'Black Swan', 'Eternal Sunshine', 'Mulholland Drive',
+  'Lost in Translation', 'Her', 'Arrival',
+  'About Time', 'The Truman Show', 'Good Will Hunting',
+  'Dead Poets Society', 'Rain Man', 'Philadelphia',
+  'Schindler List', 'Braveheart', 'Titanic',
+
+  // Documentaires
+  'Free Solo', 'Apollo 11', 'American Factory',
+  'The Last Dance', 'Tiger King', 'Making a Murderer',
+  'Icarus', '13th', 'Won t You Be My Neighbor',
+  'Three Identical Strangers', 'Where Is My Friend s House',
+  'Collective', 'My Octopus Teacher', 'Summer of Soul',
+  'Roadrunner Anthony Bourdain', 'The Rescue',
+
+  // Films arabes & africains
+  'Theeb', 'The Idol', 'Clash', 'Yomeddine',
+  'Casablanca Beats', 'Adam', 'Papicha',
+  'The Blue Caftan', 'Feathers', 'Rudy Habibi',
+
+  // Films asiatiques
+  'Train to Busan', 'The Wailing', 'A Tale of Two Sisters',
+  'Oldboy', 'I Saw the Devil', 'The Host',
+  'Mother', 'Poetry', 'Burning',
+  'Memories of Murder', 'A Bittersweet Life',
+
+  // Films européens
+  'The Square', 'Force Majeure', 'The Hunt',
+  'A Separation', 'Capernaum', 'Toni Erdmann',
+  'Son of Saul', 'The Lobster', 'The Favourite',
+  'Yorgos Lanthimos', 'Wild Tales', 'Embrace of the Serpent',
+
+  // Films 2023-2024
+  'Asteroid City', 'May December', 'Priscilla',
+  'All of Us Strangers', 'Past Lives', 'The Zone of Interest',
+  'Anatomy of a Fall', 'Monster', 'Perfect Days',
+  'Society of the Snow', 'Origin', 'American Fiction',
+  'Maestro', 'Nyad', 'Rustin',
+  'The Color Purple', 'Wonka', 'Migration',
+  'Aquaman Lost Kingdom', 'The Beekeeper',
+  'Night Swim', 'Lisa Frankenstein',
+  'Argylle', 'Bob Marley One Love', 'Madame Web',
+  'Drive-Away Dolls', 'Cabrini', 'Immaculate',
+  'Ghostbusters Frozen Empire', 'Civil War', 'Abigail',
+  'The Fall Guy', 'Challengers', 'Furiosa',
+  'Inside Out 2', 'A Quiet Place Day One',
+  'Despicable Me 4', 'Twisters', 'Alien Romulus',
+  'Deadpool and Wolverine', 'Borderlands',
+  'Alien Romulus', 'Speak No Evil', 'Transformers One',
+  'Joker Folie a Deux', 'Terrifier 3',
+  'Venom The Last Dance', 'Red One',
+  'Gladiator 2', 'Wicked', 'Moana 2',
+  'Kraven the Hunter', 'Mufasa The Lion King',
 ]
 
 const genres = ['All', 'Action', 'Drama', 'Sci-Fi', 'Comedy', 'Crime', 'Biography', 'Adventure']
