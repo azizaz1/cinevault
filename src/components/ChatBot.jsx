@@ -37,17 +37,14 @@ export default function ChatBot({ onClose }) {
     setLoading(true)
 
     try {
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-'Authorization': `Bearer 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`,
-          'HTTP-Referer': 'http://localhost:5173',
-          'X-Title': 'CineVault',
+'Authorization': `Bearer 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`,
         },
         body: JSON.stringify({
-model: 'stepfun/step-3.5-flash:free',
-          messages: [
+model: 'llama-3.3-70b-versatile',         messages: [
             { role: 'system', content: SYSTEM_PROMPT },
             ...newMessages.map(m => ({
               role: m.role,
