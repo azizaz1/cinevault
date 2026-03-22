@@ -23,7 +23,7 @@ const POPULAR_MOVIES = [
 
   // Lot 2 — Classiques modernes
   'Joker', 'Parasite', '1917', 'Ford v Ferrari',
-  'Once Upon a Time in Hollywood', 'Knives Out', 'Marriage Story',
+   'Knives Out', 'Marriage Story',
   'The Irishman', 'Jojo Rabbit', 'Little Women',
   'Midsommar', 'Hereditary', 'Get Out', 'Us', 'It Chapter Two',
   'Ad Astra', 'Uncut Gems', 'The Lighthouse', 'Booksmart', 'Rocketman',
